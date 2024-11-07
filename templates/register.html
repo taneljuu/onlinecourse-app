@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<title>Rekisteröityminen</title>
+<form action="/register" method="POST">
+    Anna käyttäjätunnus: <br><input type="text" name="username">
+    <p>
+    Anna salasana: <br><input type="password" name="password">
+    <p>
+    Anna salasana uudestaan: <br><input type="password" name="password2">
+    <p>
+    <label>
+        <input type="radio" name="choice" value=1 checked>
+        Opiskelija
+    </label>
+    <label>
+        <input type="radio" name="choice" value=2>
+        Opettaja
+    </label>
+    <p>
+        <input type="submit" value="Luo tunnus">
+</form>
+Jos sinulla on jo tunnus, voit kirjautua sisään <a href="/login">tästä</a>

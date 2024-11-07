@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Opettaja{% endblock %}
+{% block content %}
+<h2>Opettajan etusivu</h2>
+Tervetuloa opettaja {{ username }}!
+<p>
+<form action="/create_course" method="GET">
+    <button type="submit">Luo uusi kurssi</button>     
+</form>
+{% endblock %}
