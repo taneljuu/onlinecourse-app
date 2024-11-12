@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Luo uusi kurssi{% endblock %}
+{% block content %}
+<h1>Luo uusi kurssi</h1>
+
+<form action="{{ url_for('create_course') }}" method="POST">
+    <label for="course_name">Kurssin nimi:</label><br>
+    <input type="text" id="course_name" name="course_name" required><br><br>
+
+    <label for="info">Kurssin kuvaus:</label><br>
+    <textarea id="info" name="info" rows="8" cols="80" required></textarea><br><br>
+
+    <button type="submit">Luo kurssi</button>
+</form>
+
+{% endblock %}

@@ -18,3 +18,14 @@ CREATE TABLE course_enrollments (
     course_id INTEGER REFERENCES courses(id),
     student_id INTEGER REFERENCES users(id)
 );
+
+CREATE TABLE text_sections (
+    id SERIAL PRIMARY KEY,
+    course_id INTEGER REFERENCES courses(id),
+    section_number INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    visible BOOLEAN
+);

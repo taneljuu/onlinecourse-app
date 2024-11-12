@@ -5,7 +5,19 @@
 <h2>Opettajan etusivu</h2>
 Tervetuloa opettaja {{ username }}!
 <p>
-<form action="/create_course" method="GET">
+    <h2>Kurssit</h2>
+
+    {% if courses %}
+        <ul>
+            {% for course in courses %}
+                <li><strong><a href="{{ url_for('create_content', course_id=course['id']) }}">{{ course.name }}</a></strong>: {{ course.info }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Sinulla ei ole tällä hetkellä kursseja.</p>
+    {% endif %}
+<p>
+<form action="{{ url_for('create_course') }}" method="GET">
     <button type="submit">Luo uusi kurssi</button>     
 </form>
 {% endblock %}

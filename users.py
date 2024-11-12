@@ -21,11 +21,7 @@ def login(username, password):
 
     if user is None or not check_password_hash(user[2], password):
         return False
-    session["user_id"] = user[0]
-    session["user_name"] = username
-    session["user_role"] = user[3]
-    session["csrf_token"] = os.urandom(16).hex()
-
+    
     return {"id": user[0], "username": user[1], "role": user[3]}
 
 def logout():

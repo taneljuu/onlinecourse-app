@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Muokkaa kappaletta{% endblock %}
+{% block content %}
+<h2>{{ course_name }} - {{ "Muokkaa kappaletta" if section else "Luo uusi kappale" }}</h2>
+<form action="{{ url_for('edit_content', course_id=course_id, section_id=section.id if section else 0) }}" method="POST">
+    <label for="section_title">Kappaleen nimi:</label><br>
+    <input 
+        type="text" 
+        id="section_title" 
+        name="section_title" 
+        value="{{ section.title if section else '' }}" 
+        required
+    ><br><br>
+    
+    <label for="text_content">Kappaleen sisältö:</label><br>
+    <textarea 
+        id="text_content" 
+        name="text_content" 
+        rows="10" 
+        cols="80" 
+        required
+    >{{ section.content if section else '' }}</textarea><br><br>
+    
+    <button type="submit">{{ "Päivitä kappale" if section else "Luo kappale" }}</button>
+</form>
+
+{% endblock %}

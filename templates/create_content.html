@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Kurssin sisällön hallinta{% endblock %}
+{% block content %}
+<h2>Kurssin "{{ name }}" sisällön hallinta</h2>
+<h3>Kappaleet</h3>
+{% if sections %}
+    <ul>
+        {% for section in sections %}
+            <li>
+                <strong>{{ loop.index }}. {{ section.title }}</strong>
+                <a href="{{ url_for('edit_content', course_id=course_id, section_id=section.id) }}">Muokkaa</a> |
+                <a href="{{ url_for('edit_content', course_id=course_id, section_id=section.id) }}?delete=true" onclick="return confirm('Haluatko varmasti poistaa tämän kappaleen?')">Poista kappale</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Ei kappaleita vielä.</p>
+{% endif %}
+<form action="{{ url_for('edit_content', course_id=course_id, section_id=0) }}" method="GET">
+    <button type="submit">Luo uusi kappale</button>
+</form>
+<br>
+<a href="{{ url_for('teacher') }}">Etusivulle</a>
+
+{% endblock %}

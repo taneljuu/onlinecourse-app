@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <title>Verkkokurssit - {% block title %}{% endblock %}</title>
-{% if session.get("user_name") %}
-    <p>Hei {{ session["user_name"] }}, olet kirjautunut sisään.</p>
+{% if session.get("username") %}
+    <p>Hei {{ session["username"] }}, olet kirjautunut sisään.</p>
     <a href="/logout">Kirjaudu ulos</a>
 {% endif %}
 <h1>OnlineCourse-app</h1>
