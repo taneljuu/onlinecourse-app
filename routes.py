@@ -69,8 +69,9 @@ def logout():
 def student():
     if session.get("role") != 1:
         abort(403)
-    courses = students.get_available_courses()
-    return render_template("student.html", username=session.get("username"), courses=courses)
+    courses = students.get_available_courses(session["user_id"])
+    own_courses = students.get_own_courses(session["user_id"])
+    return render_template("student.html", username=session.get("username"), courses=courses, own_courses=own_courses)
 
 @app.route("/teacher")
 def teacher():
@@ -104,7 +105,7 @@ def create_content(course_id):
     sections = text_content.get_text_sections(course_id)
     
     if not course:
-        abort(404)  # Palautetaan 404, jos kurssia ei löydy
+        abort(404)  
 
     return render_template("create_content.html", name=course["name"], sections=sections, course_id=course_id, )
 
@@ -123,7 +124,7 @@ def edit_content(course_id, section_id):
     if request.method == "POST":
         title = request.form.get("section_title")
         content = request.form.get("text_content")
-        if section_id == 0:  # Jos section_id on 0, luodaan uusi kappale
+        if section_id == 0:  # if section_id == 0, create new section
             text_content.create_section(course_id, title, content)
         else:
             text_content.update_section(section_id, title, content)
@@ -133,6 +134,51 @@ def edit_content(course_id, section_id):
     if section_id != 0:
         section = text_content.get_section(section_id)
     return render_template("edit_content.html", course_id=course_id, section=section, course_name=course_name)
+
+@app.route("/student/course_info/<int:course_id>", methods=["GET"])
+def course_info(course_id):
+    """if session.get("role") != 2 or teachers.get_course(course_id)["teacher_id"] != session.get("user_id"):
+        abort(403)"""
+    
+    course = teachers.get_course(course_id)
+    sections = text_content.get_text_sections(course_id)
+    
+    if not course:
+        abort(404)  
+
+    return render_template("course_info.html", course=course, sections=sections)
+
+@app.route("/join_course", methods=["POST"])
+def join_course():
+    course_id = request.form.get("course_id")
+    user_id = session.get("user_id")
+    students.join_course(course_id, user_id)    
+    return redirect(url_for("student"))
+
+@app.route("/student/course_area/<int:course_id>", methods=["GET"])
+def course_area(course_id):
+    sections = text_content.get_text_sections(course_id)
+    processed_sections = []
+    for section in sections:
+        # Ota id, section_number ja title normaalisti
+        section_id = section[0]
+        section_number = section[1]
+        title = section[2]
+        
+        # Pilko sisältö rivinvaihtojen kohdalta
+        normalized_content = section[3].replace("\r\n", "\n").replace("\r", "\n")
+        content_lines = normalized_content.split("\n")
+        
+        # Lisää käsitelty osio listaan
+        processed_sections.append({
+            "id": section_id,
+            "number": section_number,
+            "title": title,
+            "content_lines": content_lines
+        })
+
+    return render_template("course_area.html", sections=processed_sections)
+
 
 
 

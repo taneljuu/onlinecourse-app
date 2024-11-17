@@ -4,7 +4,7 @@ from app import app
 from db import db
 
 def get_text_sections(course_id):
-    sql = text("SELECT id, section_number, title FROM text_sections WHERE course_id = :course_id AND visible = TRUE ORDER BY section_number")
+    sql = text("SELECT id, section_number, title, content FROM text_sections WHERE course_id = :course_id AND visible = TRUE ORDER BY section_number")
     result = db.session.execute(sql, {"course_id": course_id})
     return result.fetchall()
 

@@ -1,11 +1,51 @@
 <!DOCTYPE html>
-<title>Verkkokurssit - {% block title %}{% endblock %}</title>
-{% if session.get("username") %}
-    <p>Hei {{ session["username"] }}, olet kirjautunut sisään.</p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verkkokurssit - {% block title %}{% endblock %}</title>
+    
+    <style>
+        .content-container {
+            display: flex;
+        }
+
+        .left-column, .right-column {
+            width: 50%;
+            padding: 10px;
+        }
+
+        .left-column {
+            background-color: #f0f0f0;
+        }
+
+        .right-column {
+            background-color: #e8e8e8;
+        }
+
+        .fixed-width {
+            width: 60%;         /* Leveys suhteessa näytön kokoon */
+            max-width: 800px;   /* Mutta enintään 800px */
+            text-align: justify; /* Tasaa tekstin oikea reuna */
+            background-color: #f0f0f0; /* Taustaväri (esim. vaaleanharmaa) */
+            padding: 10px;         /* Sisäistä täytettä ympärille */
+            border-radius: 5px;    /* Pyöristää kulmia, ei pakollista */
+        }
+    </style>
+</head>
+<body>
+    {% if session.get("username") %}
+        <p>Hei {{ session["username"] }}, olet kirjautunut sisään.</p>
+        <a href="/logout">Kirjaudu ulos</a>
+    {% endif %}
+    
+    <h1>OnlineCourse-app</h1>
+    <hr>
+    
+    {% block content %}{% endblock %}
+    
+    <hr>
     <a href="/logout">Kirjaudu ulos</a>
-{% endif %}
-<h1>OnlineCourse-app</h1>
-<hr>
-{% block content %}{% endblock %}
-<hr>
-<a href="/logout">Kirjaudu ulos</a>
+</body>
+</html>
+

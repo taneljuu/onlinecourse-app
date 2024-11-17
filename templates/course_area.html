@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Kurssisivu{% endblock %}
+{% block content %}
+<h2>Kurssisivu</h2>
+<p>
+    {% if sections %}
+        {% for section in sections %}
+            <strong>{{ section["title"] }}</strong>
+            <div class="fixed-width">
+                {% for line in section.content_lines %}
+                    {{ line | escape }}<br>
+                {% endfor %}
+            </div><br>
+        {% endfor %}
+    {% else %}
+        <p>Kurssilla ei ole vielä sisältöä</p>
+    {% endif %}
+</p>
+
+{% endblock %}
+

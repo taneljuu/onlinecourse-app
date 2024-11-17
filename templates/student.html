@@ -1,9 +1,50 @@
 <!DOCTYPE html>
 {% extends "layout.html" %}
-{% block title %}Opiskelija{% endblock %}
+{% block title %}Opettaja{% endblock %}
 {% block content %}
+
 <h2>Opiskelijan etusivu</h2>
-Tervetuloa opiskelija {{ username }}!
+<p>Tervetuloa {{ username }}! Roolisi on opiskelija.</p>
+
+<div class="content-container">
+    <!-- Vasemman palstan kurssilistaus -->
+    <div class="left-column">
+        <h2>Valittavissa olevat kurssit</h2>
+        {% if courses %}
+            <ul>
+                {% for course in courses %}
+                <li>
+                    <strong><a href="{{ url_for('course_info', course_id=course[0]) }}">{{ course[1] }}</a></strong>: 
+                    <b>{{ course[3] }}</b> 
+                    {{ course[2] }}
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Valittavana ei ole tällä hetkellä kursseja.</p>
+        {% endif %}
+    </div>
+
+    <div class="right-column">
+        <h2>Omat kurssisi</h2>
+        {% if own_courses %}
+            <ul>
+                {% for course in own_courses %}
+                <li>
+                    <strong><a href="{{ url_for('course_area', course_id=course[0]) }}">{{ course[1] }}</a></strong>
+            
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Sinulla ei ole tällä hetkellä kursseja.</p>
+        {% endif %}
+    </div>
+</div>
+
+
 {% endblock %}
 
 

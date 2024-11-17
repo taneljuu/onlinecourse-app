@@ -24,13 +24,13 @@ def show_courses(user_id):
     return courses
 
 def get_course(course_id):
-    sql = text("SELECT id, name, info, teacher_id FROM courses WHERE id = :course_id")
+    sql = text("SELECT courses.id AS course_id, courses.name AS name, courses.info AS info, courses.teacher_id AS teacher_id, users.username AS teacher_name  FROM courses LEFT JOIN users ON courses.teacher_id = users.id WHERE courses.id = :course_id")
     result = db.session.execute(sql, {"course_id": course_id})
     course = result.fetchone()
     
     if course:
-        # Palauta sanakirja paremman selkeyden vuoksi
-        return {"id": course[0], "name": course[1], "info": course[2], "teacher_id": course[3]}
+        # return dict
+        return {"id": course[0], "name": course[1], "info": course[2], "teacher_id": course[3], "teacher_name": course[4]}
     return None
 
 def create_content(course_id):
