@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 {% extends "layout.html" %}
-{% block title %}Opettaja{% endblock %}
+{% block title %}Opiskelija{% endblock %}
 {% block content %}
 
 <h2>Opiskelijan etusivu</h2>
 <p>Tervetuloa {{ username }}! Roolisi on opiskelija.</p>
 
 <div class="content-container">
-    <!-- Vasemman palstan kurssilistaus -->
     <div class="left-column">
         <h2>Valittavissa olevat kurssit</h2>
         {% if courses %}
