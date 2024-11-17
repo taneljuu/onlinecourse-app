@@ -17,6 +17,7 @@ tsoha harjoitustyö
 - **Kurssien hallinta**: Opettaja voi luoda uuden kurssin, muokata olemassa olevia kursseja.         
 - **Materiaalin ja tehtävien lisäys**: Opettaja voi lisätä kurssille tekstimateriaalia.
 
+
 **Ei vielä toteutettu:**
 - **Tehtävien suorittaminen**: Opiskelija voi ratkoa kurssin automaattisesti tarkastettavia tehtäviä.
 - **Suoritusstatistiikka**: Opiskelija voi nähdä tilaston siitä, mitkä kurssin tehtävät hän on jo ratkonut.
@@ -32,27 +33,37 @@ tsoha harjoitustyö
 
 Sovellus ei ainakaan toistaiseksi ole testattavissa Fly.iossa, mutta sen saa käynnistettyä paikallisesti seuraavien ohjeiden mukaisesti:
 
-- Kloonaa tämä repositorio GitHubista omalle koneellesi. Siirry projektin juurikansioon, ja luo sinne .env-tiedosto, jonka sisältö määritellään seuraavanlaiseksi:
+1. **Kloonaa tämä repositorio** GitHubista omalle koneellesi. Siirry projektin juurikansioon, ja luo sinne `.env`-tiedosto, jonka sisältö määritellään seuraavanlaiseksi:
 
+    ```
     SECRET_KEY=<salainen-avain>
     DATABASE_URL=<tietokannan-paikallinen-osoite>
+    ```
 
-- Aktivoi sovelluksen virtuaaliympäristö seuraavilla komennoilla:
+2. **Aktivoi sovelluksen virtuaaliympäristö** seuraavilla komennoilla:
 
+    ```bash
     $ python3 -m venv venv
     $ source venv/bin/activate
+    ```
 
-- Asenna sovelluksen riippuvuudet:
+3. **Asenna sovelluksen riippuvuudet**:
 
+    ```bash
     $ pip install -r ./requirements.txt
+    ```
 
-- Määritä sovelluksen käyttämän postgresql-tietokannan skeema:
+4. **Määritä sovelluksen käyttämän PostgreSQL-tietokannan skeema**:
 
+    ```bash
     $ psql < schema.sql
+    ```
 
-- Käynnistä sovellus:
+5. **Käynnistä sovellus**:
 
+    ```bash
     $ flask run
+    ```
 
 
 
