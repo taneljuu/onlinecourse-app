@@ -6,4 +6,8 @@
         <li>{{ error }}</li>
     {% endfor %}
 </ul>  
-<a href="/">Palaa etusivulle</a>
+{% if session.get("user_id") %}
+    <a href="/teacher">Palaa opettajan näkymään</a>
+{% else %}
+    <a href="/">Palaa etusivulle</a>
+{% endif %}

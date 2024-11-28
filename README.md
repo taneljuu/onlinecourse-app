@@ -12,19 +12,21 @@ tsoha harjoitustyö
 ### Opiskelijan toiminnot
 - **Kurssien selaaminen ja liittyminen**: Opiskelija voi nähdä listan saatavilla olevista kursseista ja liittyä haluamilleen kursseille.
 - **Kurssimateriaalin lukeminen**: Opiskelija voi lukea opettajan lisäämiä kurssin tekstimateriaaleja.
+- **Tehtävien suorittaminen**: Opiskelija voi ratkoa kurssin monivalintatehtäviä.
 
 ### Opettajan toiminnot
 - **Kurssien hallinta**: Opettaja voi luoda uuden kurssin, muokata olemassa olevia kursseja.         
 - **Materiaalin ja tehtävien lisäys**: Opettaja voi lisätä kurssille tekstimateriaalia.
+- **Kurssien poistaminen**: Opettaja voi poistaa luomiaan kursseja
+- **Monivalintatehtävät**: Opettaja voi luoda monivalintatehtäviä, joissa opiskelija valitsee oikean vastauksen annetuista vaihtoehdoista.
 
 
-**Ei vielä toteutettu:**
-- **Tehtävien suorittaminen**: Opiskelija voi ratkoa kurssin automaattisesti tarkastettavia tehtäviä.
+### Ei vielä toteutettu:
+
+- **Tehtävien suorittaminen**: Opiskelija voi ratkoa kurssin tehtäviä, joissa kirjoitetaan vastaus tekstikenttään.
 - **Suoritusstatistiikka**: Opiskelija voi nähdä tilaston siitä, mitkä kurssin tehtävät hän on jo ratkonut.
 
-- **Kurssien poistaminen**: Opettaja voi poistaa luomiaan kursseja
 - **Tehtävät**:
-  - **Monivalintatehtävät**: Opettaja voi luoda monivalintatehtäviä, joissa opiskelija valitsee oikean vastauksen annetuista vaihtoehdoista.
   - **Avoimet kysymykset**: Opettaja voi luoda tehtäviä, joihin opiskelijan tulee kirjoittaa oikea vastaus tekstikenttään.
 - **Opiskelijatilastot**: Opettaja voi nähdä, ketkä opiskelijat ovat liittyneet kurssille ja mitkä tehtävät kukin opiskelija on suorittanut.
 

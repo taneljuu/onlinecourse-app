@@ -147,6 +147,15 @@ def delete_section(course_id, section_id):
     
     return redirect(url_for("create_content", course_id=course_id))
 
+@app.route("/teacher/delete_course/<int:course_id>", methods=["POST"])
+def delete_course(course_id):
+    if session.get("role") != 2 or teachers.get_course(course_id)["teacher_id"] != session.get("user_id"):
+        abort(403)
+    
+    teachers.delete_course(course_id)
+    
+    return redirect(url_for("teacher"))
+
 """@app.route("/teacher/create_mc_task/<int:course_id>", methods=["GET", "POST"])
 def create_mc_task(course_id):
     if session.get("role") != 2 or teachers.get_course(course_id)["teacher_id"] != session.get("user_id"):

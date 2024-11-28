@@ -10,7 +10,14 @@ Tervetuloa {{ username }}! Roolisi on opettaja.
     {% if courses %}
         <ul>
             {% for course in courses %}
-                <li><strong><a href="{{ url_for('create_content', course_id=course['id']) }}">{{ course.name }}</a></strong>: {{ course.info }}</li>
+                <li><strong><a href="{{ url_for('create_content', course_id=course['id']) }}">{{ course.name }}</a></strong>: {{ course.info }}
+                <form action="{{ url_for('delete_course', course_id=course['id']) }}" method="POST" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän kurssin?')" 
+                            style="background:none; border:none; color:blue; cursor:pointer; text-decoration:underline;">
+                        Poista kurssi
+                    </button>
+                </form>
+            </li>
             {% endfor %}
         </ul>
     {% else %}

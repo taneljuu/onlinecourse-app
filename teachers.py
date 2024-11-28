@@ -18,7 +18,7 @@ def create_new_course(name, info, teacher_id):
     return True
 
 def show_courses(user_id):
-    sql = text("SELECT id, name, info FROM courses WHERE teacher_id=:user_id")
+    sql = text("SELECT id, name, info FROM courses WHERE teacher_id=:user_id AND visible=TRUE")
     result = db.session.execute(sql, {"user_id": user_id})
     courses = result.fetchall()
     return courses
@@ -32,6 +32,27 @@ def get_course(course_id):
         # return dict
         return {"id": course[0], "name": course[1], "info": course[2], "teacher_id": course[3], "teacher_name": course[4]}
     return None
+
+def delete_course(course_id):
+    sql = text("""
+        UPDATE courses 
+        SET name = 'DELETED_' || id, visible = FALSE 
+        WHERE id = :course_id
+    """)
+    db.session.execute(sql, {"course_id": course_id})
+    db.session.commit()
+
+
+
+
+
+
+
+
+
+
+
+
 
 def create_content(course_id):
     sql = text("SELECT name FROM courses WHERE id=:course_id")
