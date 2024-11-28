@@ -29,3 +29,26 @@ CREATE TABLE text_sections (
     updated_at TIMESTAMP,
     visible BOOLEAN
 );
+
+CREATE TABLE mc_tasks (
+    id SERIAL PRIMARY KEY,
+    course_id INTEGER REFERENCES courses(id),
+    topic TEXT, 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    visible BOOLEAN 
+);
+
+CREATE TABLE choices (
+    id SERIAL PRIMARY KEY,
+    task_id INTEGER NOT NULL REFERENCES mc_tasks(id),
+    choice TEXT NOT NULL,
+    correct BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE completed_tasks (
+    id SERIAL PRIMARY KEY,
+    student_id INTEGER REFERENCES users(id),
+    task_id INTEGER NOT NULL REFERENCES mc_tasks(id),
+    course_id INTEGER NOT NULL REFERENCES courses(id),
+    UNIQUE (student_id, task_id)
+)

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Vastauspalaute{% endblock %}
+
+{% block content %}
+    <h2>Vastauspalaute</h2>
+    
+    {% if task %}
+        <p><strong>Tehtävä: </strong>{{ task.topic }}</p>
+        
+        <p><strong>Valitsemasi vastaus: </strong>{{ selected_choice.choice }}</p>
+        
+        <p>
+            {% if is_correct %}
+            <span style="color: green; font-weight: bold; font-size: 1.5em;">Oikein!</span>
+            {% else %}
+                <span style="color: red; font-weight: bold; font-size: 1.5em;">Väärin!</span>
+            {% endif %}
+        </p>
+    {% else %}
+        <p>Ei palautetta saatavilla.</p>
+    {% endif %}
+    
+    <br>
+    <a href="{{ url_for('course_area', course_id=course_id) }}">Palaa tehtäviin</a>
+{% endblock %}

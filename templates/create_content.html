@@ -7,11 +7,16 @@
 {% if sections %}
     <ul>
         {% for section in sections %}
-            <li>
-                <strong>{{ loop.index }}. {{ section.title }}</strong>
-                <a href="{{ url_for('edit_content', course_id=course_id, section_id=section.id) }}">Muokkaa</a> |
-                <a href="{{ url_for('edit_content', course_id=course_id, section_id=section.id) }}?delete=true" onclick="return confirm('Haluatko varmasti poistaa tämän kappaleen?')">Poista kappale</a>
-            </li>
+        <li>
+            <strong>{{ loop.index }}. {{ section.title }}</strong>
+            <a href="{{ url_for('edit_content', course_id=course_id, section_id=section.id) }}">Muokkaa</a> |
+            <form action="{{ url_for('delete_section', course_id=course_id, section_id=section.id) }}" method="POST" style="display:inline;">
+                <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän kappaleen?')" 
+                        style="background:none; border:none; color:blue; cursor:pointer; text-decoration:underline;">
+                    Poista kappale
+                </button>
+            </form>
+        </li>
         {% endfor %}
     </ul>
 {% else %}
@@ -20,6 +25,31 @@
 <form action="{{ url_for('edit_content', course_id=course_id, section_id=0) }}" method="GET">
     <button type="submit">Luo uusi kappale</button>
 </form>
+<br>
+
+<h3>Tehtävät</h3>
+{% if tasks %}
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <strong>{{ loop.index }}. {{ task.topic }}</strong>
+                <a href="{{ url_for('create_mc_task', course_id=course_id, task_id=task.id) }}">Muokkaa</a> |
+                <form action="{{ url_for('delete_mc_task', course_id=course_id, task_id=task.id) }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="delete" value="true">
+                    <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän tehtävän?')" style="background:none; border:none; color:blue; cursor:pointer; text-decoration:underline;">
+                        Poista tehtävä
+                    </button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Ei tehtäviä vielä.</p>
+{% endif %}
+<form action="{{ url_for('create_mc_task', course_id=course_id) }}" method="GET">
+    <button type="submit">Luo uusi monivalintatehtävä</button>
+</form>
+
 <br>
 <a href="{{ url_for('teacher') }}">Etusivulle</a>
 

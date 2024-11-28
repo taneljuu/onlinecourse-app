@@ -1,9 +1,11 @@
 from flask import render_template, request, redirect, url_for, session, abort
 from app import app
+import random
 import users
 import teachers
 import students
 import text_content
+import tasks
 import os
 
 
@@ -103,11 +105,12 @@ def create_content(course_id):
     
     course = teachers.get_course(course_id)
     sections = text_content.get_text_sections(course_id)
+    all_tasks = tasks.get_tasks(course_id)
     
     if not course:
         abort(404)  
 
-    return render_template("create_content.html", name=course["name"], sections=sections, course_id=course_id, )
+    return render_template("create_content.html", name=course["name"], sections=sections, tasks=all_tasks, course_id=course_id, )
 
 @app.route("/teacher/edit_content/<int:course_id>/<int:section_id>", methods=["GET", "POST"])
 def edit_content(course_id, section_id):
@@ -134,6 +137,65 @@ def edit_content(course_id, section_id):
     if section_id != 0:
         section = text_content.get_section(section_id)
     return render_template("edit_content.html", course_id=course_id, section=section, course_name=course_name)
+
+@app.route("/teacher/delete_section/<int:course_id>/<int:section_id>", methods=["POST"])
+def delete_section(course_id, section_id):
+    if session.get("role") != 2 or teachers.get_course(course_id)["teacher_id"] != session.get("user_id"):
+        abort(403)
+    
+    success = text_content.delete_section(section_id)
+    
+    return redirect(url_for("create_content", course_id=course_id))
+
+"""@app.route("/teacher/create_mc_task/<int:course_id>", methods=["GET", "POST"])
+def create_mc_task(course_id):
+    if session.get("role") != 2 or teachers.get_course(course_id)["teacher_id"] != session.get("user_id"):
+        abort(403)
+
+    if request.method == "POST":
+        topic = request.form["topic"]
+        correct_choice = request.form["correct"]
+        choices = request.form.getlist("choice")
+        task_id = tasks.create_mc_task(topic, course_id) 
+        tasks.add_choices(task_id, correct_choice, choices)
+        return redirect(url_for("create_content", course_id=course_id))
+
+    return render_template("create_mc_task.html", course_id=course_id)"""
+
+@app.route("/teacher/create_mc_task/<int:course_id>", defaults={"task_id": None}, methods=["GET", "POST"])
+@app.route("/teacher/create_mc_task/<int:course_id>/<int:task_id>", methods=["GET", "POST"])
+def create_mc_task(course_id, task_id):
+    if session.get("role") != 2 or teachers.get_course(course_id)["teacher_id"] != session.get("user_id"):
+        abort(403)
+
+    if request.method == "POST":
+        topic = request.form["topic"]
+        correct_choice = request.form["correct"]
+        choices = request.form.getlist("choice")
+
+        if task_id:  # Muokkaus
+            tasks.update_mc_task(task_id, topic, correct_choice, choices)
+        else:  # Uusi tehtävä
+            task_id = tasks.create_mc_task(topic, course_id)
+            tasks.add_choices(task_id, correct_choice, choices)
+
+        return redirect(url_for("create_content", course_id=course_id))
+
+    # GET-pyyntö, tarkista onko kyseessä muokkaus
+    task_data = tasks.get_task_with_choices(task_id) if task_id else None
+
+    return render_template("create_mc_task.html", course_id=course_id, task=task_data)
+
+
+
+@app.route("/teacher/delete_mc_task/<int:course_id>/<int:task_id>", methods=["POST"])
+def delete_mc_task(course_id, task_id):
+    if session.get("role") != 2 or teachers.get_course(course_id)["teacher_id"] != session.get("user_id"):
+        abort(403)
+
+    tasks.delete_mc_task(task_id)
+    # Redirect back to the content creation page
+    return redirect(url_for("create_content", course_id=course_id))
 
 @app.route("/student/course_info/<int:course_id>", methods=["GET"])
 def course_info(course_id):
@@ -176,8 +238,57 @@ def course_area(course_id):
             "title": title,
             "content_lines": content_lines
         })
+    tasks_and_choices = tasks.get_tasks_and_choices(course_id)
+    for task in tasks_and_choices.values():
+        random.shuffle(task["choices"])
 
-    return render_template("course_area.html", sections=processed_sections)
+    return render_template("course_area.html", sections=processed_sections, tasks=tasks_and_choices, course_id=course_id)
+
+@app.route("/submit_answers", methods=["POST"])
+def submit_answers():
+    if session.get("role") not in [1, 2]:  
+        abort(403)
+
+    # Determine which button submitted the data
+    task_id = None
+    for key in request.form.keys():
+        print(key)
+        if key.startswith("submit_"):  # Find the submit button, e.g., submit_3
+            task_id = key.split("_")[1]  # Extract the numeric part, e.g., "3"
+            print(task_id)
+            break
+
+    if not task_id:
+        return "Task not found", 400
+
+    # Retrieve the selected option
+    choice_id = request.form.get(f"task_{task_id}")
+    if not choice_id:
+        return "No choice selected", 400
+
+    user_id = session.get("user_id")
+    course_id = request.form.get("course_id")
+    is_correct = tasks.is_correct(choice_id, user_id, task_id, course_id)
+
+    # Fetch the task details
+    task = tasks.get_task_with_choices(task_id)
+
+    # Find the selected answer option
+    selected_choice = next((choice for choice in task["choices"] if choice["choice_id"] == int(choice_id)), None)
+    if not selected_choice:
+        return "Selected option is not valid", 400
+
+    # Create feedback and return it to the user
+    return render_template(
+        "answer_feedback.html",
+        task=task,
+        is_correct=is_correct,
+        selected_choice=selected_choice,
+        course_id=request.form.get("course_id"),
+    )
+
+
+
 
 
 
