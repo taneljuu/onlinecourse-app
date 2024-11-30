@@ -2,22 +2,29 @@
 {% extends "layout.html" %}
 {% block title %}Monivalinnan luominen{% endblock %}
 {% block content %}
-<form action="{{ url_for('create_mc_task', course_id=course_id, task_id=task['task_id'] if task else None) }}" method="POST">
-    Ohje: Kirjoita ensimmäiseen kenttään kysymys, toiseen kenttään oikea vastausvaihtoehto, ja muihin kenttiin väärät vastausvaihtoehdot.
-    <p>Kysymys:<br>
-    <textarea name="topic" rows="5" cols="50" required>{{ task['topic'] if task else '' }}</textarea>
-    <p>Oikea vastaus:<br>
-    <input type="text" name="correct" value="{{ task.choices[0]['choice'] if task and task.choices[0]['correct'] else '' }}" required></p>
-    
-    {% for i in range(1, 4) %}
-    <p>Vaihtoehto {{ i + 1 }}:<br>
-    <input type="text" name="choice" value="{{ task.choices[i]['choice'] if task and i < task.choices|length else '' }}" required></p>
-    {% endfor %}
 
-    <input type="submit" value="Tallenna">
-</form>
+<h2>Monivalintatehtävän luominen ja muokkaaminen</h2>
+<div class="fixed-width">
+
+    <form action="{{ url_for('create_mc_task', course_id=course_id, task_id=task['task_id'] if task else None) }}" method="POST">
+        <b>Ohje: Kirjoita ensimmäiseen kenttään kysymys, toiseen kenttään oikea vastausvaihtoehto, ja muihin kenttiin väärät vastausvaihtoehdot.</b>
+        <p>Kysymys:<br>
+        <textarea name="topic" rows="5" cols="50" required>{{ task['topic'] if task else '' }}</textarea>
+        <p>Oikea vastaus:<br>
+        <input type="text" name="correct" value="{{ task.choices[0]['choice'] if task and task.choices[0]['correct'] else '' }}" required></p>
+        
+        {% for i in range(1, 4) %}
+        <p>Vaihtoehto {{ i + 1 }}:<br>
+        <input type="text" name="choice" value="{{ task.choices[i]['choice'] if task and i < task.choices|length else '' }}" required></p>
+        {% endfor %}
+
+        <input type="submit" value="Tallenna">
+    </form>
+</div>
 <br>
-<a href="{{ url_for('create_content', course_id=course_id) }}">Palaa kurssisivulle</a>
+<div class="width">
+    <a href="{{ url_for('create_content', course_id=course_id) }}">Palaa kurssisivulle</a>
+</div>
 {% endblock %}
 
 

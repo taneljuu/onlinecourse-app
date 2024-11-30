@@ -3,6 +3,7 @@
 {% block title %}Vastauspalaute{% endblock %}
 
 {% block content %}
+<div class="fixed-width">
     <h2>Vastauspalaute</h2>
     
     {% if task %}
@@ -20,7 +21,11 @@
     {% else %}
         <p>Ei palautetta saatavilla.</p>
     {% endif %}
+</div>
     
     <br>
+<div class="width">
     <a href="{{ url_for('course_area', course_id=course_id) }}">Palaa tehtäviin</a>
+</div>
+
 {% endblock %}

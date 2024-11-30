@@ -28,3 +28,9 @@ def get_own_courses(user_id):
     result = db.session.execute(sql, {"user_id": user_id})
     courses = result.fetchall()
     return courses
+
+def get_course_name(course_id):
+    sql = text("SELECT name FROM courses WHERE id=:course_id")
+    result = db.session.execute(sql, {"course_id": course_id})
+    name = result.fetchone()
+    return name[0]

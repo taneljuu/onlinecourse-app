@@ -46,13 +46,8 @@ def register():
         password2 = request.form.get("password2")
         role = request.form.get("choice")
         
-        errors = []
-        if len(username) < 3 or len(username) > 20:
-            errors.append("Käyttäjätunnuksen pituuden on oltava 3-20 merkkiä")
-        if password != password2:
-            errors.append("Antamasi salasanat eroavat")
-        if len(password) < 6:
-            errors.append("Salasanan pituuden on oltava vähintään 6 merkkiä")
+        errors = users.check_username_and_password(username, password, password2)
+
         if len(errors) > 0:
             return render_template("error.html", errors=errors)
         if not users.register(username, password, role):
@@ -228,6 +223,7 @@ def join_course():
 
 @app.route("/student/course_area/<int:course_id>", methods=["GET"])
 def course_area(course_id):
+    course_name = students.get_course_name(course_id)
     sections = text_content.get_text_sections(course_id)
     processed_sections = []
     for section in sections:
@@ -251,7 +247,7 @@ def course_area(course_id):
     for task in tasks_and_choices.values():
         random.shuffle(task["choices"])
 
-    return render_template("course_area.html", sections=processed_sections, tasks=tasks_and_choices, course_id=course_id)
+    return render_template("course_area.html", sections=processed_sections, tasks=tasks_and_choices, course_id=course_id, course_name=course_name)
 
 @app.route("/submit_answers", methods=["POST"])
 def submit_answers():
@@ -295,11 +291,3 @@ def submit_answers():
         selected_choice=selected_choice,
         course_id=request.form.get("course_id"),
     )
-
-
-
-
-
-
-
-   

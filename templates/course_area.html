@@ -2,11 +2,11 @@
 {% extends "layout.html" %}
 {% block title %}Kurssisivu{% endblock %}
 {% block content %}
-<h1>Kurssisivu</h1>
+<h1>{{ course_name }}</h1>
 <p>
     {% if sections %}
         {% for section in sections %}
-            <strong>{{ section["title"] }}</strong>
+            <h3>{{ section["title"] }}</h3>
             <div class="fixed-width">
                 {% for line in section.content_lines %}
                     {{ line | escape }}<br>
@@ -23,13 +23,14 @@
     <input type="hidden" name="course_id" value="{{ course_id }}">
     {% if tasks %}
     {% for task_id, task in tasks.items() %}    
-        <h3>{{ task.topic }}</h3>
-        <ul style="list-style-type: none; padding-left: 10;"></ul>
+    <div class="task-container">
+        <h3 class="task-topic">{{ task.topic }}</h3>
+        <ul class="choices-list">
             {% for choice in task.choices %}
-                <li>
+                <li class="choice-item">
                     <label>
                         <input type="radio" name="task_{{ task_id }}" value="{{ choice.choice_id }}">
-                        {{ choice.choice }} 
+                        {{ choice.choice }}
                     </label>
                 </li>
             {% endfor %}
@@ -37,14 +38,17 @@
         <br>
         <input type="hidden" name="task_id" value="{{ task.id }}">
         <input type="submit" value="Vastaa" name="submit_{{ task_id }}">
-        {% endfor %}
+    </div>
+    {% endfor %}
+    
     {% else %}
         <p>Ei tehtäviä.</p>
     {% endif %}
 </form>
 <br>
-<a href="{{ url_for('student') }}">Etusivulle</a>
-<br>
+<div class="width">
+    <a href="{{ url_for('student') }}">Etusivulle</a>
+</div>
 
 {% endblock %}
 

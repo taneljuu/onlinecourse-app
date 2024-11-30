@@ -3,6 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flask import abort, request, session
 import os
 from sqlalchemy.sql import text
+import string
 
 def register(username, password, role):
     hash_value = generate_password_hash(password)
@@ -13,6 +14,22 @@ def register(username, password, role):
     except:
         return False
     return True
+
+def check_username_and_password(username, password, password2):
+    errors = []
+    if len(username) < 3 or len(username) > 20:
+        errors.append("Käyttäjätunnuksen pituuden on oltava 3-20 merkkiä")
+    if password != password2:
+        errors.append("Antamasi salasanat eroavat")
+    if len(password) < 6:
+        errors.append("Salasanan pituuden on oltava vähintään 6 merkkiä")
+    if not any(char.isalpha() for char in password):
+        errors.append("Salasanan pitää sisältää kirjain")
+    if not any(char.isdigit() for char in password):
+        errors.append("Salasanan pitää sisältää numero")
+    if not any(char in string.punctuation for char in password):
+        errors.append("Salasanan pitää sisältää erikoismerkki")
+    return errors
 
 def login(username, password):
     sql = text("SELECT id, username, password, role FROM users WHERE username=:username")

@@ -4,7 +4,7 @@
 {% block content %}
 
 <h2>Opiskelijan etusivu</h2>
-<p>Tervetuloa {{ username }}! Roolisi on opiskelija.</p>
+<p class="center-text">Tervetuloa {{ username }}! Roolisi on opiskelija.</p>
 
 <div class="content-container">
     <div class="left-column">
@@ -32,7 +32,6 @@
                 {% for course in own_courses %}
                 <li>
                     <strong><a href="{{ url_for('course_area', course_id=course[0]) }}">{{ course[1] }}</a></strong>
-            
                 </li>
                 <br>
                 {% endfor %}

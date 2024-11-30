@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-
-<title>Virheet</title>
-<ul>
-    {% for error in errors %}
-        <li>{{ error }}</li>
-    {% endfor %}
-</ul>  
-{% if session.get("user_id") %}
-    <a href="/teacher">Palaa opettajan näkymään</a>
-{% else %}
-    <a href="/">Palaa etusivulle</a>
-{% endif %}
+{% extends "layout.html" %}
+{% block title %}Virheet{% endblock %}
+{% block content %}
+    <div class="fixed-width">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>  
+        {% if session.get("user_id") %}
+            <a href="/teacher">Palaa opettajan näkymään</a>
+        {% else %}
+            <a href="/">Palaa etusivulle</a>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,14 +1,40 @@
 <!DOCTYPE html>
-<html lang="fi">
-<head>
-    <meta charset="UTF-8">
-    <title>Etusivu</title>
-</head>
-<body>
-    <h1>Onlinecourse-app</h1>
-    <p>
-        <a href="/login">Kirjautuminen</a> &nbsp; | &nbsp;
-        <a href="/register">Rekisteröityminen</a>
-    </p>
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}Etusivu{% endblock %}
+{% block content %}
+
+    <div class="fixed-width">
+        </head>
+        <body>
+            
+            <h2>Tervetuloa OnlineCourse-appiin</h2>
+            <p>OnlineCourse on työkalu, joka mahdollistaa verkkokurssien luomisen ja suorittamisen helposti. Liity nyt ja aloita oppiminen tai opettaminen!
+            </p>
+            <h2>Kuinka aloittaa?</h2>
+
+                <h3>Opiskelijoille:</h3>
+                <ol>
+                    <li>Rekisteröidy käyttäjäksi.</li>
+                    <li>Kirjaudu sisään ja selaa kursseja.</li>
+                    <li>Valitse kurssi ja aloita oppiminen!</li>
+                </ol>
+
+                <h3>Opettajille:</h3>
+                <ol>
+                    <li>Rekisteröidy käyttäjäksi.</li>
+                    <li>Kirjaudu sisään</li>
+                    <li>Luo uusi kurssi ja lisää sisältöä, kuten tehtäviä tai materiaaleja.</li>
+                    <li>Selaa luomiasi kursseja "Omat kurssit" -osiossa.</li>
+                    <li>Jaa kurssin tiedot opiskelijoille ja seuraa heidän edistymistään.</li>
+                </ol>
+
+                <div style="text-align: center;">
+                    <a href="/login" style="padding: 10px 20px; background-color: #28A745; color: white; text-decoration: none; border-radius: 5px;">Kirjaudu sisään</a>
+                    &nbsp;
+                    <a href="/register" style="padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Rekisteröidy</a>
+
+                </div>
+
+        </body>
+    </div>
+{% endblock %}
