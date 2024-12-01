@@ -4,6 +4,7 @@
 {% block content %}
 <h1>{{ course_name }}</h1>
 <p>
+    <h2>Kurssimateriaali</h2>
     {% if sections %}
         {% for section in sections %}
             <h3>{{ section["title"] }}</h3>
@@ -14,7 +15,9 @@
             </div><br>
         {% endfor %}
     {% else %}
-        <p>Kurssilla ei ole vielä sisältöä</p>
+        <div class="fixed-width">
+            <p>Opettaja ei ole vielä luonut kurssille sisältöä.</p>
+        </div>
     {% endif %}
 </p>
 
@@ -42,7 +45,9 @@
     {% endfor %}
     
     {% else %}
-        <p>Ei tehtäviä.</p>
+    <div class="fixed-width">
+        <p>Opettaja ei ole vielä luonut kurssille tehtäviä.</p>
+    </div>
     {% endif %}
 </form>
 <br>

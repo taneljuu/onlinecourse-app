@@ -51,4 +51,4 @@ CREATE TABLE completed_tasks (
     task_id INTEGER NOT NULL REFERENCES mc_tasks(id),
     course_id INTEGER NOT NULL REFERENCES courses(id),
     UNIQUE (student_id, task_id)
-)
+);
