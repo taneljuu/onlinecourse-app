@@ -4,6 +4,10 @@
 {% block content %}
 <h1>{{ course_name }}</h1>
 <p>
+
+<div class="width">
+    <a href="{{ url_for('student') }}">Etusivulle</a>
+</div>
     <h2>Kurssimateriaali</h2>
     {% if sections %}
         {% for section in sections %}
@@ -21,12 +25,12 @@
     {% endif %}
 </p>
 
-<h2>Monivalintatehtävät</h2>
+<h2 id="tasks-start">Monivalintatehtävät</h2>
 <form action="/submit_answers" method="POST">
     <input type="hidden" name="course_id" value="{{ course_id }}">
     {% if tasks %}
     {% for task_id, task in tasks.items() %}    
-    <div class="task-container">
+    <div class="task-container {{ 'correct' if task_id in completed_mcs else '' }}">
         <h3 class="task-topic">{{ task.topic }}</h3>
         <ul class="choices-list">
             {% for choice in task.choices %}
@@ -40,16 +44,40 @@
         </ul>
         <br>
         <input type="hidden" name="task_id" value="{{ task.id }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <input type="submit" value="Vastaa" name="submit_{{ task_id }}">
     </div>
     {% endfor %}
     
     {% else %}
     <div class="fixed-width">
-        <p>Opettaja ei ole vielä luonut kurssille tehtäviä.</p>
+        <p>Opettaja ei ole vielä luonut kurssille monivalintatehtäviä.</p>
     </div>
     {% endif %}
 </form>
+
+<h2>Avoimet kysymykset</h2>
+{% if open_tasks %}
+    {% for task in open_tasks %}
+    <form action="/submit_open_tasks" method="POST">
+        <input type="hidden" name="course_id" value="{{ course_id }}">
+        <div class="task-container {{ 'correct' if task.id in completed_opens else '' }}">
+            <h3 class="task-topic">{{ task.topic }}</h3>
+            <textarea name="answer_{{ task.id }}" rows="5" cols="40"></textarea>
+            <br>
+            <input type="hidden" name="task_id" value="{{ task.id }}">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <button type="submit" name="open_{{ task.id }}" value="{{ task.id }}">Vastaa</button>
+        </div>
+    </form>
+    {% endfor %}
+{% else %}
+<div class="fixed-width">
+    <p>Opettaja ei ole vielä luonut kurssille avoimia tehtäviä.</p>
+</div>
+{% endif %}
+
+
 <br>
 <div class="width">
     <a href="{{ url_for('student') }}">Etusivulle</a>

@@ -25,6 +25,7 @@
             required
         >{{ section.content if section else '' }}</textarea><br><br>
         
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <button type="submit">{{ "Päivitä kappale" if section else "Luo kappale" }}</button>
     </form>
 </div>

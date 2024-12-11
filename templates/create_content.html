@@ -3,6 +3,7 @@
 {% block title %}Kurssin sisällön hallinta{% endblock %}
 {% block content %}
 <h2>Kurssin "{{ name }}" sisällön hallinta</h2>
+
 <div class="fixed-width">
     <h3>Kappaleet</h3>
     {% if sections %}
@@ -12,6 +13,7 @@
                 <strong>{{ loop.index }}. {{ section.title }}</strong>
                 <a href="{{ url_for('edit_content', course_id=course_id, section_id=section.id) }}">Muokkaa</a> |
                 <form action="{{ url_for('delete_section', course_id=course_id, section_id=section.id) }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän kappaleen?')" 
                             style="background:none; border:none; color:blue; cursor:pointer; text-decoration:underline;">
                         Poista kappale
@@ -21,7 +23,7 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>Ei kappaleita vielä.</p>
+        <p>Et ole vielä luonut tekstisisältöä tälle kurssille.</p>
     {% endif %}
     <form action="{{ url_for('edit_content', course_id=course_id, section_id=0) }}" method="GET">
         <button type="submit">Luo uusi kappale</button>
@@ -31,7 +33,7 @@
 
 <div class="fixed-width">
 
-    <h3>Tehtävät</h3>
+    <h3>Monivalintatehtävät</h3>
     {% if tasks %}
         <ul>
             {% for task in tasks %}
@@ -40,6 +42,7 @@
                     <a href="{{ url_for('create_mc_task', course_id=course_id, task_id=task.id) }}">Muokkaa</a> |
                     <form action="{{ url_for('delete_mc_task', course_id=course_id, task_id=task.id) }}" method="POST" style="display:inline;">
                         <input type="hidden" name="delete" value="true">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän tehtävän?')" style="background:none; border:none; color:blue; cursor:pointer; text-decoration:underline;">
                             Poista tehtävä
                         </button>
@@ -48,10 +51,39 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>Ei tehtäviä vielä.</p>
+        <p>Et ole vielä luonut monivalintatehtäviä tälle kurssille.</p>
     {% endif %}
     <form action="{{ url_for('create_mc_task', course_id=course_id) }}" method="GET">
         <button type="submit">Luo uusi monivalintatehtävä</button>
+    </form>
+</div>
+<br>
+
+<div class="fixed-width">
+
+    <h3>Avoimet kysymykset</h3>
+    {% if open_tasks %}
+        <ul>
+            {% for task in open_tasks %}
+                <li>
+                    <strong>{{ loop.index }}. {{ task.topic }}</strong>
+                    <a href="{{ url_for('create_open_task', course_id=course_id, task_id=task.id) }}">Muokkaa</a> |
+                    <form action="{{ url_for('delete_open_task', course_id=course_id, task_id=task.id) }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="delete" value="true">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                        <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän tehtävän?')" style="background:none; border:none; color:blue; cursor:pointer; text-decoration:underline;">
+                            Poista tehtävä
+                        </button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Et ole vielä luonut avoimia kysmyksiä tälle kurssille.</p>
+    {% endif %}
+    
+    <form action="{{ url_for('create_open_task', course_id=course_id) }}" method="GET">
+        <button type="submit">Luo avoin kysymys</button>
     </form>
 </div>
 

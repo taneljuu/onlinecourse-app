@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Avoimen kysymyksen luominen{% endblock %}
+{% block content %}
+
+<h2>Avoimen kysymyksen luominen ja muokkaaminen</h2>
+<div class="fixed-width">
+
+    <form action="{{ url_for('create_open_task', course_id=course_id, task_id=task['task_id'] if task else None) }}" method="POST">
+        <b>Ohje: Kirjoita ensimmäiseen kenttään kysymys ja toiseen kenttään oikea vastaus.</b>
+        <p>Kysymys:<br>
+        <textarea name="topic" rows="5" cols="50" required>{{ task['topic'] if task else '' }}</textarea>
+        <p>Oikea vastaus:<br>
+        <input type="text" name="answer" value="{{ task['answer'] if task else '' }}" required></p>
+
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="submit" value="Tallenna">
+    </form>
+</div>
+<br>
+<div class="width">
+    <a href="{{ url_for('create_content', course_id=course_id) }}">Palaa kurssisivulle</a>
+</div>
+{% endblock %}

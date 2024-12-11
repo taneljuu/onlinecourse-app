@@ -9,7 +9,7 @@
     {% if task %}
         <p><strong>Tehtävä: </strong>{{ task.topic }}</p>
         
-        <p><strong>Valitsemasi vastaus: </strong>{{ selected_choice.choice }}</p>
+        <p><strong>Vastauksesi: </strong>{{ selected_choice.choice if multichoice else selected_choice }}</p>
         
         <p>
             {% if is_correct %}
@@ -25,7 +25,7 @@
     
     <br>
 <div class="width">
-    <a href="{{ url_for('course_area', course_id=course_id) }}">Palaa tehtäviin</a>
+    <a href="{{ url_for('course_area', course_id=course_id) }}#tasks-start">Palaa tehtäviin</a>
 </div>
 
 {% endblock %}

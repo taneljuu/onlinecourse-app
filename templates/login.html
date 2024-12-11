@@ -6,10 +6,11 @@
 <h2>Kirjaudu sisään</h2>
 <div class="fixed-width">
     <form action="/login" method="POST">
-        Käyttäjätunnus: <br><input type="text" name="username">
+        Käyttäjätunnus: <br><input type="text" name="username" autofocus>
         <p>
         Salasana: <br><input type="password" name="password">
         <p>
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <input type="submit" value="Kirjaudu">
     </form>
     Voit luoda uuden tunnuksen <a href="/register">tästä</a>

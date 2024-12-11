@@ -18,6 +18,7 @@
         <input type="text" name="choice" value="{{ task.choices[i]['choice'] if task and i < task.choices|length else '' }}" required></p>
         {% endfor %}
 
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <input type="submit" value="Tallenna">
     </form>
 </div>

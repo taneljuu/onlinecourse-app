@@ -87,18 +87,78 @@ def update_choices(task_id, correct_choice, choices):
     # Add new choices
     add_choices(task_id, correct_choice, choices)
 
-def is_correct(choice_id, student_id, task_id, course_id):
+def is_correct(choice_id, student_id, task_id, course_id, task_type):
     # Check if the selected choice is correct
     sql = text("SELECT correct FROM choices WHERE id = :choice_id")
     result = db.session.execute(sql, {"choice_id": choice_id}).fetchone()
     if result:
         if result[0] == True:
             print(task_id)
-            add_completed_task(student_id, task_id, course_id)
+            add_completed_task(student_id, task_id, course_id, task_type)
         return result[0]  # Return True/False based on whether the answer is correct
     return False  # If no result, return False (incorrect answer)
 
-def add_completed_task(student_id, task_id, course_id):
-    sql = text("INSERT INTO completed_tasks (student_id, task_id, course_id) VALUES (:student_id, :task_id, :course_id) ON CONFLICT (student_id, task_id) DO NOTHING")
-    db.session.execute(sql, {"student_id": student_id, "task_id": task_id, "course_id": course_id})
+def is_correct_open(answer, task_id, student_id, course_id, task_type):
+    sql = text("SELECT answer FROM open_tasks WHERE id = :task_id")
+    result = db.session.execute(sql, {"task_id": task_id}).fetchone()
+    correct = result[0].strip().lower() == answer.strip().lower()
+    if result:
+        if correct == True:
+            add_completed_task(student_id, task_id, course_id, task_type)
+        return correct  # Return True/False based on whether the answer is correct
+    return False  # If no result, return False (incorrect answer)
+        
+def completed_mcs(user_id, course_id):
+    sql = text("SELECT task_id FROM completed_tasks WHERE course_id = :course_id AND student_id = :user_id AND task_type = 'mc'")
+    result = db.session.execute(sql, {"course_id": course_id, "user_id": user_id}).fetchall()
+    return [row[0] for row in result]
+
+def completed_opens(user_id, course_id):
+    sql = text("SELECT task_id FROM completed_tasks WHERE course_id = :course_id AND student_id = :user_id AND task_type = 'open'")
+    result = db.session.execute(sql, {"course_id": course_id, "user_id": user_id}).fetchall()
+    return [row[0] for row in result]
+
+def add_completed_task(student_id, task_id, course_id, task_type):
+    sql = text("INSERT INTO completed_tasks (student_id, task_id, course_id, task_type) VALUES (:student_id, :task_id, :course_id, :task_type) ON CONFLICT (student_id, task_id, task_type) DO NOTHING")
+    db.session.execute(sql, {"student_id": student_id, "task_id": task_id, "course_id": course_id, "task_type": task_type})
     db.session.commit()
+
+def create_open_task(topic, answer, course_id):
+    sql = text("INSERT INTO open_tasks (course_id, topic, answer, created_at, visible) VALUES (:course_id, :topic, :answer, NOW(), TRUE)")
+    db.session.execute(sql, {"course_id":course_id, "topic":topic, "answer":answer})
+    db.session.commit()
+
+def get_open_tasks(course_id):
+    sql = text("SELECT id, topic, answer, created_at FROM open_tasks WHERE course_id = :course_id AND visible = TRUE ORDER BY created_at")
+    result = db.session.execute(sql, {"course_id": course_id})
+    return result.fetchall()
+
+def get_open_task_data(task_id):
+    int(task_id)  
+    sql = text("""
+        SELECT id, topic, answer
+        FROM open_tasks
+        WHERE id = :task_id
+    """)
+    result = db.session.execute(sql, {"task_id": task_id}).fetchall()
+
+    print(result)
+    # return the task details and choices
+    task = {
+        "task_id": result[0][0],  # task_id
+        "topic": result[0][1],    # topic
+        "answer": result[0][2]
+    }
+    return task
+
+def update_open_task(task_id, topic, answer):
+    sql_task = text("UPDATE open_tasks SET topic=:topic, answer=:answer WHERE id = :task_id")
+    db.session.execute(sql_task, {"topic": topic, "answer":answer, "task_id": task_id})
+    db.session.commit()
+
+def delete_open_task(task_id):
+    sql = text("UPDATE open_tasks SET visible = FALSE WHERE id = :task_id")
+    db.session.execute(sql, {"task_id": task_id})
+    db.session.commit()
+    
+    

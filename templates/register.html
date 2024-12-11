@@ -11,7 +11,7 @@
         Salasanan on sisällettävä kirjain, numero ja erikoismerkki <br><br>
 
     <form action="/register" method="POST">
-        Anna käyttäjätunnus: <br><input type="text" name="username">
+        Anna käyttäjätunnus: <br><input type="text" name="username" autofocus>
         <p>
         Anna salasana: <br><input type="password" name="password">
         <p>
@@ -26,6 +26,7 @@
             Opettaja
         </label>
         <p>
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <input type="submit" value="Luo tunnus">
     </form>
     Jos sinulla on jo tunnus, voit kirjautua sisään <a href="/login">tästä</a>

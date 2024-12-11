@@ -126,6 +126,27 @@
             background-color: #f9f9f9; /* Taustaväri */
         }
 
+        .task-container.correct {
+            width: 60%;
+            max-width: 800px;
+            margin: 0 auto; /* Lisää ylä- ja alatilaa */
+            background-color: #d4edda; /* Vaaleanvihreä */
+            border: 1px solid #c3e6cb; /* Hieman tummempi vihreä reunaviiva */
+            padding: 15px;
+            border-radius: 5px;
+            position: relative; /* Varmistaa, että pseudo-elementti on suhteessa tähän elementtiin */
+        }
+
+        .task-container.correct::after {
+            content: "✅"; /* Symboli tehtävän suorittamiselle */
+            font-size: 24px; /* Symbolin koko */
+            color: #28a745; /* Vihreä väri symbolille */
+            position: absolute; /* Sijoita symboli suhteessa konttiin */
+            top: 10px; /* Etäisyys ylhäältä */
+            right: 10px; /* Etäisyys oikealta */
+}
+
+
         .task-topic {
             font-size: 1.5em; /* Suurempi fonttikoko otsikolle */
             margin-bottom: 10px; /* Lisää tilaa otsikon ja vaihtoehtojen väliin */

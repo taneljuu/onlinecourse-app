@@ -47,8 +47,18 @@ CREATE TABLE choices (
 
 CREATE TABLE completed_tasks (
     id SERIAL PRIMARY KEY,
+    task_type TEXT NOT NULL, -- "mc" or "open"
     student_id INTEGER REFERENCES users(id),
     task_id INTEGER NOT NULL REFERENCES mc_tasks(id),
     course_id INTEGER NOT NULL REFERENCES courses(id),
-    UNIQUE (student_id, task_id)
+    UNIQUE (student_id, task_id, task_type)
+);
+
+CREATE TABLE open_tasks (
+    id SERIAL PRIMARY KEY,
+    course_id INTEGER REFERENCES courses(id),
+    topic TEXT,
+    answer TEXT, 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    visible BOOLEAN 
 );

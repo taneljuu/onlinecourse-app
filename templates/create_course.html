@@ -12,6 +12,7 @@
         <label for="info">Kurssin kuvaus:</label><br>
         <textarea id="info" name="info" rows="8" cols="80" required></textarea><br><br>
 
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <button type="submit">Luo kurssi</button>
     </form>
 </div>

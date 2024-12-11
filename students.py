@@ -34,3 +34,5 @@ def get_course_name(course_id):
     result = db.session.execute(sql, {"course_id": course_id})
     name = result.fetchone()
     return name[0]
+
+    
