@@ -119,7 +119,7 @@ def completed_opens(user_id, course_id):
     return [row[0] for row in result]
 
 def add_completed_task(student_id, task_id, course_id, task_type):
-    sql = text("INSERT INTO completed_tasks (student_id, task_id, course_id, task_type) VALUES (:student_id, :task_id, :course_id, :task_type) ON CONFLICT (student_id, task_id, task_type) DO NOTHING")
+    sql = text("INSERT INTO completed_tasks (student_id, task_id, course_id, task_type, completion_time) VALUES (:student_id, :task_id, :course_id, :task_type, NOW()) ON CONFLICT (student_id, task_id, task_type) DO NOTHING")
     db.session.execute(sql, {"student_id": student_id, "task_id": task_id, "course_id": course_id, "task_type": task_type})
     db.session.commit()
 

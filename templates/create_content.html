@@ -4,6 +4,13 @@
 {% block content %}
 <h2>Kurssin "{{ name }}" sisällön hallinta</h2>
 
+<div class="width">
+    <a href="{{ url_for('teacher') }}">Etusivulle</a>
+
+    <a href="{{ url_for('participants', course_id=course_id) }}" style="margin-left: auto;">Kurssin opiskelijat</a>
+</div>
+
+
 <div class="fixed-width">
     <h3>Kappaleet</h3>
     {% if sections %}

@@ -65,7 +65,7 @@ def register():
         return redirect("/")
 
 
-@app.route("/logout")
+@app.route('/logout', methods=['POST'])
 def logout():
     del session["user_id"]
     del session["username"]
@@ -117,10 +117,22 @@ def create_content(course_id):
     mc_tasks = tasks.get_tasks(course_id)
     open_tasks = tasks.get_open_tasks(course_id)
     
+    completed_mcs = tasks.completed_mcs(session.get("user_id"), course_id) # 
+    completed_opens = tasks.completed_opens(session.get("user_id"), course_id)
+    participants = (teachers.get_course_participants(course_id))
     if not course:
         abort(404)  
 
-    return render_template("create_content.html", name=course["name"], sections=sections, tasks=mc_tasks, open_tasks=open_tasks, course_id=course_id, )
+    return render_template("create_content.html", name=course["name"], sections=sections, tasks=mc_tasks, open_tasks=open_tasks, course_id=course_id, participants=participants, completed_mcs=completed_mcs, completed_opens=completed_opens)
+
+@app.route("/teacher/create_content/participants/<int:course_id>", methods=["GET"])
+def participants(course_id):
+    if session.get("role") != 2 or teachers.get_course(course_id)["teacher_id"] != session.get("user_id"):
+        abort(403)
+    participants = teachers.get_course_participants(course_id)
+    course = teachers.get_course(course_id)
+
+    return render_template("participants.html", course_name=course["name"], course_id=course_id, participants=participants)
 
 @app.route("/teacher/edit_content/<int:course_id>/<int:section_id>", methods=["GET", "POST"])
 def edit_content(course_id, section_id):
@@ -269,6 +281,17 @@ def join_course():
     course_id = request.form.get("course_id")
     user_id = session.get("user_id")
     students.join_course(course_id, user_id)    
+    return redirect(url_for("student"))
+
+@app.route("/leave_course", methods=["POST"])
+def leave_course():
+    if session.get("role") != 1:  
+        abort(403)
+    if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+    course_id = request.form.get("course_id")
+    user_id = session.get("user_id")
+    students.leave_course(course_id, user_id)
     return redirect(url_for("student"))
 
 @app.route("/student/course_area/<int:course_id>", methods=["GET"])

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Kurssin osallistujat{% endblock %}
+{% block content %}
+<h2>Kurssin "{{ course_name }}" osallistujat</h2>
+
+<div class="width">
+    <a href="{{ url_for('create_content', course_id=course_id) }}">Takaisin</a>
+</div>
+
+<div class="fixed-width">
+    {% if participants %}
+        {% for student, tasks in participants.items() %}
+            <h3>
+                {{ student }}<br> 
+                <a href="#table-{{ loop.index }}" class="student-name">&#9660; Näytä tehtävät</a>
+            </h3>
+            <table id="table-{{ loop.index }}" class="student-table">
+                <thead>
+                    <tr>
+                        <th>Tehtävätyyppi</th>
+                        <th>Aihe</th>
+                        <th>Suoritettu</th>
+                        <th>Suoritusajankohta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr class="{{ 'completed' if task.completed else '' }}">
+                        <td>{{ 'Monivalinta' if task.task_type == 'mc' else 'Avoin' }}</td>
+                        <td>{{ task.topic }}</td>
+                        <td>{{ 'Kyllä' if task.completed else 'Ei' }}</td>
+                        <td>{{ task.completion_time.strftime('%d.%m.%Y klo %H:%M:%S') if task.completion_time else 'Ei suoritettu' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    {% else %}
+    Kurssilla ei ole vielä osallistujia.
+    {% endif %}
+</div>
+
+
+{% endblock %}

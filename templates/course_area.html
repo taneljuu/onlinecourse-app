@@ -5,9 +5,18 @@
 <h1>{{ course_name }}</h1>
 <p>
 
-<div class="width">
-    <a href="{{ url_for('student') }}">Etusivulle</a>
-</div>
+    <div class="width">
+        <a href="{{ url_for('student') }}" class="left-link">Etusivulle</a>
+        <form action="{{ url_for('leave_course') }}" method="POST" class="right-form">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <input type="hidden" name="course_id" value="{{ course_id }}">
+
+            <button type="submit" onclick="return confirm('Haluatko varmasti poistua kurssilta?')">
+                Poistu kurssilta
+            </button>
+        </form>
+    </div>
+    
     <h2>Kurssimateriaali</h2>
     {% if sections %}
         {% for section in sections %}

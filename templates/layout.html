@@ -6,40 +6,64 @@
     <title>Verkkokurssit - {% block title %}{% endblock %}</title>
     
     <style>
-        /* Yleiset tyylit */
+        /* General styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9; /* Vaalea taustaväri */
-            color: #333; /* Tumma teksti */
-            line-height: 1.6; /* Tekstin riviväli */
+            background-color: #f9f9f9; /* Light background color */
+            color: #333; /* Dark text color */
+            line-height: 1.6; /* Line height for text */
         }
 
+        /* Input fields and textarea styling */
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            width: 50%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"],
+        textarea:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            outline: none;
+        }
+
+        /* Textarea minimum height and resize option */
+        textarea {
+            min-height: 100px; /* Default height of the text area */
+            resize: vertical; /* Allows user to resize height */
+        }
+
+        /* Link styling */
         a {
-            color: #007BFF; /* Linkit sinisellä */
+            color: #007BFF; /* Blue links */
             text-decoration: none;
         }
+
         a:hover {
-            text-decoration: underline;
+            text-decoration: underline; /* Underline on hover */
         }
 
-        /* Otsikot */
+        /* Header styling */
         h1 {
-            background-color: #4CAF50; /* Vihreä otsikkotausta */
+            background-color: #4CAF50; /* Green background for main title */
             color: white;
             text-align: center;
             padding: 20px;
             margin: 0;
         }
 
-        h2 {
-            text-align: center;
-            padding: 20px;
-            margin: 0;
-        }
-
-        h3 {
+        h2, h3 {
             text-align: center;
             padding: 20px;
             margin: 0;
@@ -52,7 +76,7 @@
             margin: 20px 0;
         }
 
-        /* Pääkontti */
+        /* Layout for columns */
         .content-container {
             display: flex;
             justify-content: center;
@@ -63,121 +87,274 @@
         .left-column, .right-column {
             width: 50%;
             padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Kevyt varjo */
-            border-radius: 5px; /* Pyöristetyt reunat */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+            border-radius: 5px; /* Rounded corners */
         }
 
         .left-column {
-            background-color: #fdfdfd; /* Valkoinen tausta */
+            background-color: #fdfdfd; /* White background */
         }
 
         .right-column {
-            background-color: #f1f1f1; /* Vaaleanharmaa tausta */
+            background-color: #f1f1f1; /* Light gray background */
         }
 
-        /* Lisätyyli tekstikonteille */
+        /* Fixed width text containers */
         .fixed-width {
-            width: 60%;         
-            max-width: 800px;   
-            text-align: justify; 
+            width: 60%;
+            max-width: 800px;
+            text-align: justify;
             background-color: #ffffff;
-            padding: 20px;      
-            margin: 0 auto; /* Keskittää */
-            border: 1px solid #ddd; /* Ohut reunaviiva */
-            border-radius: 5px;    
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Kevyt varjo */
+            padding: 20px;
+            margin: 0 auto; /* Centers the container */
+            border: 1px solid #ddd; /* Thin border */
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Light shadow */
             line-height: 2;
             font-size: 18px;
         }
 
         .width {
-            width: 60%;         
-            max-width: 800px;   
-            padding: 20px;      
-            margin: 0 auto; /* Keskittää */
-            border-radius: 5px;    
+            width: 60%;
+            max-width: 800px;
+            padding: 20px;
+            margin: 0 auto; /* Centers the element */
+            border-radius: 5px;
             line-height: 2;
+            font-size: 18px;
+            display: flex; /* Enables flexbox layout */
+            justify-content: space-between; /* Distribute elements to left and right */
+            align-items: center; /* Vertically centers items */
+        }
+
+        /* Link and form styles */
+        .left-link {
+            text-decoration: none;
+            color: #007bff;
             font-size: 18px;
         }
 
-        /* Napit */
+        .right-form {
+            margin: 0;
+        }
+
+        .right-form button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            background-color: #dc3545; /* Red button */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .right-form button:hover {
+            background-color: #c82333; /* Darker red on hover */
+        }
+
+        /* General button styling */
         .button {
             display: inline-block;
             padding: 10px 20px;
             margin-top: 10px;
             font-size: 16px;
             color: white;
-            background-color: #4CAF50; /* Vihreä */
+            background-color: #4CAF50; /* Green button */
             border: none;
             border-radius: 5px;
             cursor: pointer;
             text-align: center;
         }
+
         .button:hover {
-            background-color: #45a049; /* Tummempi vihreä */
+            background-color: #45a049; /* Darker green on hover */
         }
+
+        /* Logout and login buttons */
+        .logout-button, .login-button {
+            margin-right: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Logout button styling */
+        .logout-button {
+            background-color: #FF5733; /* Red for logout */
+        }
+
+        .logout-button:hover {
+            background-color: #c1351d; /* Darker red on hover */
+        }
+
+        /* Login button styling */
+        .login-button {
+            background-color: #4CAF50; /* Green for login */
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .login-button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        /* Forms for login and logout buttons */
+        .logout-form, .login-form {
+            display: inline-block; /* Keep forms side by side */
+            text-align: right; /* Align buttons to the right */
+            width: 100%; /* Full width */
+        }
+
+        /* Styling for task containers */
         .task-container {
-            width: 60%;         
+            width: 60%;
             max-width: 800px;
-            margin: 0 auto; /* Lisää ylä- ja alatilaa */
-            padding: 15px; /* Sisäistä täytettä */
-            border: 1px solid #ccc; /* Kehys */
-            border-radius: 8px; /* Pyöristetyt kulmat */
-            background-color: #f9f9f9; /* Taustaväri */
+            margin: 0 auto;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
         }
 
         .task-container.correct {
-            width: 60%;
-            max-width: 800px;
-            margin: 0 auto; /* Lisää ylä- ja alatilaa */
-            background-color: #d4edda; /* Vaaleanvihreä */
-            border: 1px solid #c3e6cb; /* Hieman tummempi vihreä reunaviiva */
+            background-color: #d4edda; /* Light green for correct tasks */
+            border: 1px solid #c3e6cb; /* Darker green border */
             padding: 15px;
-            border-radius: 5px;
-            position: relative; /* Varmistaa, että pseudo-elementti on suhteessa tähän elementtiin */
+            position: relative; /* Allows positioning of the symbol */
         }
 
         .task-container.correct::after {
-            content: "✅"; /* Symboli tehtävän suorittamiselle */
-            font-size: 24px; /* Symbolin koko */
-            color: #28a745; /* Vihreä väri symbolille */
-            position: absolute; /* Sijoita symboli suhteessa konttiin */
-            top: 10px; /* Etäisyys ylhäältä */
-            right: 10px; /* Etäisyys oikealta */
-}
-
-
-        .task-topic {
-            font-size: 1.5em; /* Suurempi fonttikoko otsikolle */
-            margin-bottom: 10px; /* Lisää tilaa otsikon ja vaihtoehtojen väliin */
-            color: #333; /* Tumma väri otsikolle */
+            content: "✅"; /* Check mark symbol */
+            font-size: 24px; /* Size of the check mark */
+            color: #28a745; /* Green color for check mark */
+            position: absolute; /* Position check mark in the top-right */
+            top: 10px;
+            right: 10px;
         }
 
+        /* Task topic styling */
+        .task-topic {
+            font-size: 1.5em; /* Larger font for topic */
+            margin-bottom: 10px;
+            color: #333; /* Dark text */
+        }
+
+        /* Choices list for tasks */
         .choices-list {
-            list-style-type: none; /* Poistaa listapallot */
-            padding: 0; /* Poistaa sisäisen tyhjän tilan */
+            list-style-type: none; /* Remove list bullets */
+            padding: 0;
         }
 
         .choice-item {
-            margin: 10px 0; /* Lisää tilaa jokaisen vaihtoehdon väliin */
+            margin: 10px 0; /* Space between each choice */
         }
 
         .choice-item label {
-            cursor: pointer; /* Muuttaa hiiren osoittimen kädeksi valinnan kohdalla */
+            cursor: pointer; /* Change cursor to pointer on hover */
         }
+
+        /* Center text */
         .center-text {
             text-align: center;
         }
 
+        /* Table styling */
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        /* Styling for completed tasks in tables */
+        .completed {
+            background-color: #30aa4c; /* Light green for completed tasks */
+        }
+
+        /* Table for student tasks */
+        .student-table {
+            display: none; /* Initially hidden */
+        }
+
+        .student-table:target {
+            display: table; /* Display table when it's targeted */
+        }
+
+        /* Link for showing task table */
+        .student-name {
+            cursor: pointer;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .student-name:hover {
+            color: #0056b3;
+        }
+
+        /* Styling for student task table */
+        .student-table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+            background-color: #fff;
+            display: none; /* Initially hidden */
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+        }
+
+        .student-table th, .student-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .student-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .student-table .completed {
+            background-color: #d4edda; /* Light green for completed tasks */
+        }
+
+        .student-table:target {
+            display: table; /* Show table when targeted */
+        }
+
+        
     </style>
 </head>
 <body>
     <p style="text-align: right; padding: 10px; margin: 0;">
         {% if session.get("username") %}
             Hei <strong>{{ session["username"] }}</strong>, olet kirjautunut sisään.
-            <a href="/logout" class="button" style="margin-left: 10px; background-color: #FF5733; padding: 5px 10px; color: white; text-decoration: none; border-radius: 5px;">Kirjaudu ulos</a>
+            <form action="/logout" method="POST" class="logout-form">
+                <button type="submit" class="logout-button">Kirjaudu ulos</button>
+            </form>
         {% else %}
-            <a href="/login" class="button" style="background-color: #4CAF50; padding: 5px 10px; color: white; text-decoration: none; border-radius: 5px;">Kirjaudu sisään</a>
+            <form action="/login" method="GET" class="login-form">
+                <button type="submit" class="login-button">Kirjaudu sisään</button>
+            </form>
         {% endif %}
     </p>
     

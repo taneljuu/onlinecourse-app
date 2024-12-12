@@ -51,6 +51,7 @@ CREATE TABLE completed_tasks (
     student_id INTEGER REFERENCES users(id),
     task_id INTEGER NOT NULL REFERENCES mc_tasks(id),
     course_id INTEGER NOT NULL REFERENCES courses(id),
+    completion_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (student_id, task_id, task_type)
 );
 

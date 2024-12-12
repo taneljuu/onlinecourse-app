@@ -42,16 +42,67 @@ def delete_course(course_id):
     db.session.execute(sql, {"course_id": course_id})
     db.session.commit()
 
+def get_course_participants(course_id):
+    sql = text("""
+        SELECT 
+            u.id AS student_id,
+            u.username AS student_name,
+            t.task_type,
+            t.task_id,
+            t.topic,
+            CASE WHEN ct.student_id IS NOT NULL THEN TRUE ELSE FALSE END AS completed, ct.completion_time
+        FROM 
+            users u
+        JOIN 
+            course_enrollments ce ON u.id = ce.student_id
+        LEFT JOIN (
+            SELECT 
+                mc.id AS task_id, 
+                'mc' AS task_type, 
+                mc.topic
+            FROM 
+                mc_tasks mc
+            WHERE 
+                mc.course_id = :course_id AND mc.visible = TRUE
+            
+            UNION ALL
+            
+            SELECT 
+                ot.id AS task_id, 
+                'open' AS task_type, 
+                ot.topic
+            FROM 
+                open_tasks ot
+            WHERE 
+                ot.course_id = :course_id AND ot.visible = TRUE
+        ) t ON TRUE -- Yhdistetään kaikki näkyvät tehtävät jokaiseen opiskelijaan
+        LEFT JOIN 
+            completed_tasks ct ON t.task_id = ct.task_id 
+                AND ct.task_type = t.task_type 
+                AND ct.student_id = u.id
+                AND ct.course_id = :course_id
+        WHERE 
+            ce.course_id = :course_id
+        ORDER BY 
+            u.username, t.task_type, t.task_id;
+    """)
+    result = db.session.execute(sql, {"course_id": course_id})
 
+    student_tasks = {}
+    for row in result:
+        student_name = row[1]
+        task_info = {
+            "task_type": row[2],
+            "task_id": row[3],
+            "topic": row[4],
+            "completed": row[5],
+            "completion_time": row[6]
+        }
+        if student_name not in student_tasks:
+            student_tasks[student_name] = []
+        student_tasks[student_name].append(task_info)
 
-
-
-
-
-
-
-
-
+    return student_tasks
 
 
 def create_content(course_id):
