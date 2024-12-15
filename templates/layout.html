@@ -309,6 +309,7 @@
 
         .student-name:hover {
             color: #0056b3;
+            text-decoration: none;
         }
 
         /* Styling for student task table */
@@ -348,7 +349,7 @@
     <p style="text-align: right; padding: 10px; margin: 0;">
         {% if session.get("username") %}
             Hei <strong>{{ session["username"] }}</strong>, olet kirjautunut sisään.
-            <form action="/logout" method="POST" class="logout-form">
+            <form action="/logout" method="GET" class="logout-form">
                 <button type="submit" class="logout-button">Kirjaudu ulos</button>
             </form>
         {% else %}

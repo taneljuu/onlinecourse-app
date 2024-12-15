@@ -3,7 +3,8 @@ tsoha harjoitustyö
 
 **onlinecourse-app** on opetussovellus, joka mahdollistaa verkkokurssien järjestämisen. Sovelluksessa käyttäjät voivat kirjautua joko opettajina tai opiskelijoina. Opettajat voivat luoda kursseja, lisätä kursseille materiaalia ja tehtäviä sekä seurata opiskelijoiden etenemistä. Opiskelijat voivat liittyä kursseille, opiskella sisältöä ja ratkoa tehtäviä.
 
-## Tämänhetkinen tilanne
+
+## Sovelluksen toiminnot
 
 ### Yleiset toiminnot
 - **Käyttäjätilit**: Käyttäjä voi rekisteröityä, kirjautua sisään ja ulos sovelluksesta.
@@ -12,28 +13,35 @@ tsoha harjoitustyö
 ### Opiskelijan toiminnot
 - **Kurssien selaaminen ja liittyminen**: Opiskelija voi nähdä listan saatavilla olevista kursseista ja liittyä haluamilleen kursseille.
 - **Kurssimateriaalin lukeminen**: Opiskelija voi lukea opettajan lisäämiä kurssin tekstimateriaaleja.
-- **Tehtävien suorittaminen**: Opiskelija voi ratkoa kurssin monivalintatehtäviä.
+- **Tehtävien suorittaminen**: Opiskelija voi ratkoa kurssin monivalintatehtäviä, sekä tehtäviä, joissa kirjoitetaan vastaus tekstikenttään.
+- **Suoritusstatistiikka**: Opiskelija voi nähdä tilaston siitä, mitkä kurssin tehtävät hän on jo ratkonut.
 
 ### Opettajan toiminnot
 - **Kurssien hallinta**: Opettaja voi luoda uuden kurssin, muokata olemassa olevia kursseja.         
-- **Materiaalin ja tehtävien lisäys**: Opettaja voi lisätä kurssille tekstimateriaalia.
 - **Kurssien poistaminen**: Opettaja voi poistaa luomiaan kursseja
-- **Monivalintatehtävät**: Opettaja voi luoda monivalintatehtäviä, joissa opiskelija valitsee oikean vastauksen annetuista vaihtoehdoista.
-
-
-### Ei vielä toteutettu:
-
-- **Tehtävien suorittaminen**: Opiskelija voi ratkoa kurssin tehtäviä, joissa kirjoitetaan vastaus tekstikenttään.
-- **Suoritusstatistiikka**: Opiskelija voi nähdä tilaston siitä, mitkä kurssin tehtävät hän on jo ratkonut.
-
+- **Materiaalin ja tehtävien lisäys**: Opettaja voi lisätä kurssille tekstimateriaalia.
 - **Tehtävät**:
   - **Avoimet kysymykset**: Opettaja voi luoda tehtäviä, joihin opiskelijan tulee kirjoittaa oikea vastaus tekstikenttään.
+  - **Monivalintatehtävät**: Opettaja voi luoda monivalintatehtäviä, joissa opiskelija valitsee oikean vastauksen annetuista vaihtoehdoista.
 - **Opiskelijatilastot**: Opettaja voi nähdä, ketkä opiskelijat ovat liittyneet kurssille ja mitkä tehtävät kukin opiskelija on suorittanut.
+
+
+## Tekninen toteutus
+
+### Sovellus on toteutettu seuraavilla teknologioilla:
+
+- **Backend**: Python (Flask-web-framework)
+- **Frontend**: HTML, CSS
+- **Tietokanta**: PostgreSQL
+
+PostgreSQL-tietokanta sisältää kaikki sovelluksen tietorakenteet, kuten käyttäjät, kurssit, tehtävät ja suoritustiedot.
+HTML/CSS-pohjaiset käyttöliittymäsivut renderöidään Flaskin avulla.
+Flask vastaa reittien määrittelystä ja liikenteen hallinnasta käyttäjän ja tietokannan välillä.
 
 
 ## Käynnistysohjeet
 
-Sovellus ei ainakaan toistaiseksi ole testattavissa Fly.iossa, mutta sen saa käynnistettyä paikallisesti seuraavien ohjeiden mukaisesti:
+Sovelluksen saa käynnistettyä paikallisesti seuraavien ohjeiden mukaisesti:
 
 1. **Kloonaa tämä repositorio** GitHubista omalle koneellesi. Siirry projektin juurikansioon, ja luo sinne `.env`-tiedosto, jonka sisältö määritellään seuraavanlaiseksi:
 

@@ -32,6 +32,11 @@ def add_choices(task_id, correct_choice, choices):
     db.session.commit()
 
 def get_tasks_and_choices(course_id):
+    """
+    Fetch all visible multiple-choice tasks and their corresponding choices for a given course. 
+    Returns a dictionary where each task contains its topic and a list of choices, including 
+    their IDs, text, and correctness.
+    """
     sql = text("SELECT mc_tasks.id AS task_id, mc_tasks.topic AS topic, choices.id AS choice_id, choices.choice AS choice, choices.correct AS correct " \
                "FROM mc_tasks " \
                "JOIN choices ON mc_tasks.id = choices.task_id " \
@@ -64,8 +69,8 @@ def get_task_with_choices(task_id):
 
     # return the task details and choices
     task = {
-        "task_id": result[0][0],  # task_id
-        "topic": result[0][1],    # topic
+        "task_id": result[0][0],  
+        "topic": result[0][1],    
         "choices": [{"choice_id": row[2], "choice": row[3], "correct": row[4]} for row in result]
     }
     return task
@@ -119,7 +124,9 @@ def completed_opens(user_id, course_id):
     return [row[0] for row in result]
 
 def add_completed_task(student_id, task_id, course_id, task_type):
-    sql = text("INSERT INTO completed_tasks (student_id, task_id, course_id, task_type, completion_time) VALUES (:student_id, :task_id, :course_id, :task_type, NOW()) ON CONFLICT (student_id, task_id, task_type) DO NOTHING")
+    sql = text("""INSERT INTO completed_tasks (student_id, task_id, course_id, task_type, completion_time) 
+               VALUES (:student_id, :task_id, :course_id, :task_type, NOW()) 
+               ON CONFLICT (student_id, task_id, task_type) DO NOTHING""")
     db.session.execute(sql, {"student_id": student_id, "task_id": task_id, "course_id": course_id, "task_type": task_type})
     db.session.commit()
 
@@ -142,11 +149,9 @@ def get_open_task_data(task_id):
     """)
     result = db.session.execute(sql, {"task_id": task_id}).fetchall()
 
-    print(result)
-    # return the task details and choices
     task = {
-        "task_id": result[0][0],  # task_id
-        "topic": result[0][1],    # topic
+        "task_id": result[0][0],  
+        "topic": result[0][1],    
         "answer": result[0][2]
     }
     return task

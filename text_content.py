@@ -1,6 +1,4 @@
 from sqlalchemy.sql import text
-from flask import render_template, request, redirect, session
-from app import app
 from db import db
 
 def get_text_sections(course_id):

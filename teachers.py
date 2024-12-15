@@ -24,7 +24,10 @@ def show_courses(user_id):
     return courses
 
 def get_course(course_id):
-    sql = text("SELECT courses.id AS course_id, courses.name AS name, courses.info AS info, courses.teacher_id AS teacher_id, users.username AS teacher_name  FROM courses LEFT JOIN users ON courses.teacher_id = users.id WHERE courses.id = :course_id")
+    sql = text("""SELECT courses.id AS course_id, courses.name AS name, courses.info AS info, courses.teacher_id AS teacher_id, users.username AS teacher_name  
+                FROM courses 
+                LEFT JOIN users ON courses.teacher_id = users.id 
+                WHERE courses.id = :course_id""")
     result = db.session.execute(sql, {"course_id": course_id})
     course = result.fetchone()
     
@@ -43,6 +46,11 @@ def delete_course(course_id):
     db.session.commit()
 
 def get_course_participants(course_id):
+    """
+    Retrieve progress information for all students in a course, including their completion status 
+    for all visible tasks (both multiple-choice and open-ended). Combines data on student 
+    enrollment, task visibility, and task completion, sorted by student and task details.
+    """
     sql = text("""
         SELECT 
             u.id AS student_id,
